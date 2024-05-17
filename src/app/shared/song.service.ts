@@ -47,7 +47,7 @@ export class SongService {
   deleteSong(id: string): Observable<Song[]> {
     return this.http
       .delete<Song[]>(
-        'http://localhost:3000/api/delete-song/' + id,
+        'http://localhost:3000/api/delete/' + id,
         this.httpOptions
       )
       .pipe(

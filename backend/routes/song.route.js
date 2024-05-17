@@ -17,6 +17,7 @@ songRoute.route('/create').post(async (req, res) => {
 songRoute.route('/').get(async (req, res) => {
     try {
         const results = await SongModel.find({});
+        console.log(results);
         res.json(results);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -26,7 +27,8 @@ songRoute.route('/').get(async (req, res) => {
 // get single song
 songRoute.route('/read/:id').get((req, res) => {
     SongModel.findById(req.params.id).then( (results) => {
-        return next(results);
+        console.log(results);
+        res.json(results);
     }).catch((error) => {
         res.json(error);
     });
@@ -36,7 +38,8 @@ songRoute.route('/read/:id').get((req, res) => {
 songRoute.route('/update/:id').put((req, res, next) => {
     SongModel.findByIdAndUpdate(req.params.id, {$set: req.body}, {new: true}).then((results) => {
         if (updatedDocument) {
-            return next(results);
+            console.log(results);
+            res.json(results);
         } else {
           console.log('Document not found');
         }
@@ -47,12 +50,12 @@ songRoute.route('/update/:id').put((req, res, next) => {
 
 // Delete song
 songRoute.route('/delete/:id').delete((req, res, next) => {
-    SongModel.findByIdAndRemove(req.params.id).then((results) => {
+    SongModel.findByIdAndDelete(req.params.id).then((results) => {
         if (!results) {
-            return res.status(404).json({ message: "Song not found" });
+            res.status(404).json({ message: "Song not found" });
         }
         
-        return res.json({ message: "Song deleted successfully", deletedSong });
+        res.json({ message: "Song deleted successfully", deletedSong });
     }).catch((error) => {
         res.json(error);
     });
